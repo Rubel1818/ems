@@ -62,4 +62,8 @@ class EmployeeController extends Controller
         $employee->delete();
         return back()->with('success', 'ডাটা ডিলিট হয়েছে');
     }
+    public function show(Employee $employee)
+    {
+        return view('employees.detail_view', compact('employee'));
+    }
 }

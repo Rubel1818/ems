@@ -4,16 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 
-/*
-|--------------------------------------------------------------------------
-| Public Route
-|--------------------------------------------------------------------------
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
-
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes
@@ -28,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Employee CRUD (Protected)
     Route::resource('employees', EmployeeController::class);
+    Route::get('employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,9 +29,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+
+
+
+
+
+
+
+
+/*  
+
 /*
 |--------------------------------------------------------------------------
 | Breeze Auth Routes
 |--------------------------------------------------------------------------
-*/
+ */
 require __DIR__ . '/auth.php';
