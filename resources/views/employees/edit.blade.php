@@ -3,284 +3,340 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>কর্মচারী তথ্য হালনাগাদ করুন</title>
+    <title>কর্মচারী তথ্য হালনাগাদ | HR Portal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #64748b;
+        }
+
         body {
-            background-color: #f4f6f9;
+            background-color: #f1f5f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .sidebar {
-            min-height: calc(100vh - 56px);
-            background: #0d6efd;
+        .main-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
         }
 
-        .sidebar a {
-            color: #fff;
-            text-decoration: none;
+        .card-header-custom {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 20px;
+            border: none;
         }
 
-        .sidebar a:hover,
-        .sidebar .active {
-            background: rgba(255, 255, 255, 0.15);
+        .form-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-section-title i {
+            margin-right: 10px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            padding: 10px 12px;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .photo-upload-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #e2e8f0;
+            overflow: hidden;
+            background: #f8fafc;
+            margin: 0 auto;
+        }
+
+        #photoPreview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .update-btn {
+            background: var(--primary-color);
+            border: none;
+            padding: 12px 35px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .update-btn:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .back-link {
+            color: var(--secondary-color);
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--primary-color);
         }
     </style>
 </head>
 
 <body>
 
-    <!-- 🔹 Header (UNCHANGED) -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">Dashboard</a>
-
-            <div class="collapse navbar-collapse justify-content-end">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('profile.edit') }}">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button class="btn btn-link nav-link text-white" type="submit">
-                                Logout
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @include('employees.head_navbar')
 
     <div class="container-fluid">
         <div class="row">
 
-            <!-- 🔹 Sidebar -->
-            <nav class="col-md-3 col-lg-2 sidebar p-3">
-                <h6 class="text-white text-center mb-4">মেনু</h6>
+            @include('employees.sidebar')
 
-                <ul class="nav flex-column gap-2">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('dashboard') }}">
-                            <i class="bi bi-speedometer2 me-2"></i> ড্যাশবোর্ড
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link text-white active" href="{{ route('employees.index') }}">
-                            <i class="bi bi-people me-2"></i> কর্মচারী তালিকা
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('profile.edit') }}">
-                            <i class="bi bi-person me-2"></i> প্রোফাইল
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- 🔹 Main Content -->
             <main class="col-md-9 col-lg-10 p-4">
 
-                <div class="card shadow">
-                    <div class="card-header bg-warning">
-                        <h5 class="mb-0 text-dark">কর্মচারী তথ্য হালনাগাদ করুন</h5>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="{{ route('employees.index') }}"
+                                    class="back-link text-decoration-none">কর্মচারী তালিকা</a></li>
+                            <li class="breadcrumb-item active">হালনাগাদ</li>
+                        </ol>
+                    </nav>
+                    <a href="{{ route('employees.index') }}" class="back-link text-decoration-none">
+                        <i class="bi bi-arrow-left"></i> ফিরে যান
+                    </a>
+                </div>
+
+                <div class="card main-card shadow-lg">
+                    <div class="card-header-custom text-center">
+                        <h4 class="mb-0 fw-bold"><i class="bi bi-person-check-fill me-2"></i> কর্মচারী তথ্য হালনাগাদ
+                            করুন</h4>
                     </div>
 
-                    <div class="card-body">
-
-                        <div class="mb-4">
-                            <a href="{{ route('employees.index') }}" class="text-decoration-none">
-                                ← কর্মচারী তালিকায় ফিরে যান
-                            </a>
-                        </div>
-
+                    <div class="card-body p-4 p-lg-5">
                         <form action="{{ route('employees.update', $employee->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
-                            <!-- Employee ID & Photo -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">কর্মচারীর আইডি</label>
-                                    <input type="text" name="employee_id"
-                                        value="{{ old('employee_id', $employee->employee_id) }}" class="form-control">
-                                </div>
+                            <div class="form-section-title">
+                                <i class="bi bi-person-circle"></i> ব্যক্তিগত প্রোফাইল
+                            </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label">ছবি</label>
-
-                                    <input type="file" name="photo" class="form-control" accept="image/*"
+                            <div class="row g-4 mb-5 align-items-center">
+                                <div class="col-md-3 text-center">
+                                    <div class="photo-upload-wrapper shadow-sm mb-2">
+                                        <img id="photoPreview"
+                                            src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/default-avatar.png') }}"
+                                            alt="Profile">
+                                    </div>
+                                    <label for="photoInput" class="btn btn-sm btn-outline-primary rounded-pill">
+                                        <i class="bi bi-camera me-1"></i> ছবি পরিবর্তন
+                                    </label>
+                                    <input type="file" name="photo" id="photoInput" class="d-none" accept="image/*"
                                         onchange="previewPhoto(event)">
-
-                                    <!-- Existing image OR preview -->
-                                    <img id="photoPreview"
-                                        src="{{ $employee->photo ? asset('storage/' . $employee->photo) : '' }}"
-                                        class="img-thumbnail mt-2 {{ $employee->photo ? '' : 'd-none' }}"
-                                        style="height: 50px;" alt="Photo Preview">
                                 </div>
 
+                                <div class="col-md-9">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">কর্মচারীর আইডি <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light"><i
+                                                        class="bi bi-hash"></i></span>
+                                                <input type="text" name="employee_id"
+                                                    value="{{ old('employee_id', $employee->employee_id) }}"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">জন্ম তারিখ <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light"><i
+                                                        class="bi bi-calendar-event"></i></span>
+                                                <input type="date" name="birth_date" class="form-control"
+                                                    value="{{ old('birth_date', optional($employee->birth_date)->format('Y-m-d')) }}"
+                                                    required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">নাম (বাংলা) <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" name="name_bn"
+                                                value="{{ old('name_bn', $employee->name_bn) }}" class="form-control"
+                                                required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">নাম (ইংরেজি) <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" name="name_en"
+                                                value="{{ old('name_en', $employee->name_en) }}" class="form-control"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <!-- Name -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">নাম (বাংলা)</label>
-                                    <input type="text" name="name_bn"
-                                        value="{{ old('name_bn', $employee->name_bn) }}" class="form-control">
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">নাম (ইংরেজি)</label>
-                                    <input type="text" name="name_en"
-                                        value="{{ old('name_en', $employee->name_en) }}" class="form-control">
-                                </div>
+                            <div class="form-section-title">
+                                <i class="bi bi-geo-alt"></i> ঠিকানা ও অবস্থান
                             </div>
 
-                            <!-- Designation -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">পদবি (বাংলা)</label>
-                                    <input type="text" name="designation_bn"
-                                        value="{{ old('designation_bn', $employee->designation_bn) }}"
-                                        class="form-control">
-                                </div>
+                            @php
+                                use App\Models\District;
+                                $districts = District::orderBy('district_name_bn')->get();
+                            @endphp
 
-                                <div class="col-md-6">
-                                    <label class="form-label">পদবি (ইংরেজি)</label>
-                                    <input type="text" name="designation_en"
-                                        value="{{ old('designation_en', $employee->designation_en) }}"
-                                        class="form-control">
-                                </div>
-                            </div>
-
-                            <!-- Present Address -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
+                            <div class="row g-4 mb-5">
+                                <div class="col-md-8">
                                     <label class="form-label">বর্তমান ঠিকানা (বাংলা)</label>
-                                    <textarea name="present_address_bn" rows="2" class="form-control">{{ old('present_address_bn', $employee->present_address_bn) }}</textarea>
+                                    <textarea name="present_address_bn" rows="1" class="form-control" placeholder="গ্রাম, রাস্তা, পোস্ট কোড...">{{ old('present_address_bn', $employee->present_address_bn) }}</textarea>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">বর্তমান ঠিকানা (ইংরেজি)</label>
-                                    <textarea name="present_address_en" rows="2" class="form-control">{{ old('present_address_en', $employee->present_address_en) }}</textarea>
-                                </div>
-                            </div>
-
-                            <!-- Permanent Address -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">স্থায়ী ঠিকানা (বাংলা)</label>
-                                    <textarea name="permanent_address_bn" rows="2" class="form-control">{{ old('permanent_address_bn', $employee->permanent_address_bn) }}</textarea>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">স্থায়ী ঠিকানা (ইংরেজি)</label>
-                                    <textarea name="permanent_address_en" rows="2" class="form-control">{{ old('permanent_address_en', $employee->permanent_address_en) }}</textarea>
+                                <div class="col-md-4">
+                                    <label class="form-label">নিজ জেলা <span class="text-danger">*</span></label>
+                                    <select name="district_id" class="form-select" required>
+                                        <option value="">-- নির্বাচন করুন --</option>
+                                        @foreach ($districts as $district)
+                                            <option value="{{ $district->id }}"
+                                                {{ old('district_id', $employee->district_id) == $district->id ? 'selected' : '' }}>
+                                                {{ $district->district_name_bn }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 
-                            <!-- Office -->
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    কর্মরত দপ্তর / অনুবিভাগ / অধিশাখা / শাখা / সেলের নাম
-                                </label>
-                                <input type="text" name="office_name"
-                                    value="{{ old('office_name', $employee->office_name) }}" class="form-control">
+                            <div class="form-section-title">
+                                <i class="bi bi-briefcase"></i> দাপ্তরিক তথ্য
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">কর্মরত দপ্তরের মেয়াদকাল</label>
-                                <input type="text" name="office_duration"
-                                    value="{{ old('office_duration', $employee->office_duration) }}"
-                                    class="form-control">
-                            </div>
+                            @php
+                                use App\Models\StuffDesignation;
+                                use App\Models\Section;
+                                $designations = StuffDesignation::orderBy('designation_name_bn')->get();
+                                $sections = Section::orderBy('section_name_bn')->get();
+                            @endphp
 
-                            <!-- Dates -->
-                            <div class="row mb-3">
+                            <div class="row g-4 mb-5">
                                 <div class="col-md-6">
-                                    <label class="form-label">চাকরিতে যোগদানের তারিখ</label>
+                                    <label class="form-label">পদবি <span class="text-danger">*</span></label>
+                                    <select name="stuff_designation_id" class="form-select" required>
+                                        <option value="">পদবি নির্বাচন করুন</option>
+                                        @foreach ($designations as $designation)
+                                            <option value="{{ $designation->id }}"
+                                                {{ old('stuff_designation_id', $employee->stuff_designation_id) == $designation->id ? 'selected' : '' }}>
+                                                {{ $designation->designation_name_bn }}
+                                                ({{ $designation->designation_name_en }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">কর্মরত শাখা</label>
+                                    <select name="section_id" class="form-select">
+                                        <option value="">-- শাখা নির্বাচন করুন --</option>
+                                        @foreach ($sections as $section)
+                                            <option value="{{ $section->id }}"
+                                                {{ old('section_id', $employee->section_id) == $section->id ? 'selected' : '' }}>
+                                                {{ $section->section_name_bn }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">যোগদানের তারিখ</label>
                                     <input type="date" name="joining_date"
                                         value="{{ old('joining_date', $employee->joining_date) }}"
                                         class="form-control">
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">চাকরি স্থায়ীকরণের তারিখ</label>
+                                <div class="col-md-4">
+                                    <label class="form-label">স্থায়ীকরণের তারিখ</label>
                                     <input type="date" name="confirmation_date"
                                         value="{{ old('confirmation_date', $employee->confirmation_date) }}"
                                         class="form-control">
                                 </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">দপ্তরের মেয়াদকাল (শুরু)</label>
+                                    <input type="date" name="office_start_date"
+                                        value="{{ old('office_start_date', $employee->office_start_date) }}"
+                                        class="form-control">
+                                </div>
                             </div>
 
-                            <!-- Service Book -->
-                            <div class="mb-4">
-                                <label class="form-label">স্ক্যানকৃত সার্ভিসবুক</label>
-                                <input type="file" name="service_book" class="form-control">
+                            <div class="form-section-title">
+                                <i class="bi bi-file-earmark-pdf"></i> নথিপত্র (Documents)
                             </div>
 
-                            <!-- Submit -->
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-primary px-4">
-                                    আপডেট করুন
+                            <div class="row mb-5">
+                                <div class="col-md-12">
+                                    <div class="p-4 border border-dashed rounded-3 bg-light text-center">
+                                        <label class="form-label d-block fw-bold">স্ক্যানকৃত সার্ভিসবুক আপলোড
+                                            করুন</label>
+                                        <input type="file" name="service_book" class="form-control w-50 mx-auto">
+                                        <small class="text-muted mt-2 d-block">ফাইল ফরম্যাট: PDF, JPG (সর্বোচ্চ ৫
+                                            মেগাবাইট)</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary update-btn shadow">
+                                    <i class="bi bi-save me-2"></i> তথ্য হালনাগাদ করুন
                                 </button>
                             </div>
 
                         </form>
                     </div>
                 </div>
-
             </main>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- 🔹 Photo Preview Script -->
     <script>
         function previewPhoto(event) {
             const preview = document.getElementById('photoPreview');
-            const file = event.target.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.classList.remove('d-none');
-                };
-                reader.readAsDataURL(file);
+            const reader = new FileReader();
+            reader.onload = e => {
+                preview.src = e.target.result;
+            };
+            if (event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
             }
         }
     </script>
-
-    <script>
-        function previewPhoto(event) {
-            const input = event.target;
-            const preview = document.getElementById('photoPreview');
-
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.classList.remove('d-none');
-                };
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-    </script>
-
 
 </body>
 

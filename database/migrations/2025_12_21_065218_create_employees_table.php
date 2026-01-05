@@ -24,13 +24,16 @@ return new class extends Migration
 
             $table->text('present_address_bn')->nullable();
             $table->text('present_address_en')->nullable();
+            $table->text('present_district')->nullable();
 
             $table->text('permanent_address_bn')->nullable();
             $table->text('permanent_address_en')->nullable();
+            $table->text('permanent_district')->nullable();
 
             $table->string('office_name')->nullable();
             $table->string('office_duration')->nullable();
 
+            $table->date('birth_date')->nullable();
             $table->date('joining_date')->nullable();
             $table->date('confirmation_date')->nullable();
 

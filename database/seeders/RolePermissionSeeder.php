@@ -26,6 +26,7 @@ class RolePermissionSeeder extends Seeder
             'employees.edit',
             'employees.delete',
             'user.dashboard',
+            'employees.approve'
         ];
 
         foreach ($permissions as $permission) {
@@ -64,9 +65,11 @@ class RolePermissionSeeder extends Seeder
         // userDashboard gets only user.dashboard   permissions
         $userDashboardRole->givePermissionTo('user.dashboard');
         // Employee gets all permissions except delete
-        $employeeRole->syncPermissions(
-            Permission::where('name', '!=', 'employees.delete')->get()
-        );
+        Permission::whereNotIn('name', [
+            'employees.approve',
+            'employees.delete'
+        ])->get();
+
         //|--------------------------------------------------------------------------
         //| Assign Admin Role to User ID = 1
         //|--------------------------------------------------------------------------
