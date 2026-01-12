@@ -94,7 +94,7 @@
     <div class="container-fluid">
         <div class="row">
 
-            @include('employees.sidebar')
+            @include('user.sidebar')
 
             <main class="col-md-9 col-lg-10 p-4">
 
@@ -233,10 +233,12 @@
                                     <label class="form-label">স্থায়ীকরণের তারিখ</label>
                                     <input type="date" name="confirmation_date" class="form-control">
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">স্ক্যানকৃত সার্ভিসবুক (PDF/Image)</label>
-                                    <input type="file" name="service_book" class="form-control">
-                                </div>
+                                @role('admin|employee')
+                                    <div class="col-md-4">
+                                        <label class="form-label">স্ক্যানকৃত সার্ভিসবুক (PDF/Image)</label>
+                                        <input type="file" name="service_book" class="form-control">
+                                    </div>
+                                @endrole
                             </div>
 
                             <hr class="my-4">

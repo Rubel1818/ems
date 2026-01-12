@@ -50,7 +50,7 @@ class NormalUserController extends Controller
         $data['employee_id'] = $employeeId;
         Employee::create($data);
 
-        return redirect()->route('NormalUser.Dashboard')->with('success', 'ডাটা সংরক্ষণ হয়েছে');
+        return back()->with('success', 'ডাটা সংরক্ষণ হয়েছে');
     }
     private function generateEmployeeId()
     {

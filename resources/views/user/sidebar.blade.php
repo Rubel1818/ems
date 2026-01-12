@@ -77,8 +77,6 @@
                 </li>
             @endrole
 
-
-
             <li class="nav-item mt-4 pt-4 border-top border-secondary border-opacity-10">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

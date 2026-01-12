@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+//use EmailVerificationNotificationController;
+// User Management এর জন্য AdminController মেথড ব্যবহার করা হয়েছে  
 class AdminUserController extends Controller
 {
     // User Management এর জন্য AdminController মেথড
     public function userIndex()
     {
-        $users = User::with('roles')->get();
+        $users = User::whereNotNull('email_verified_at')->with('roles')->get();
         $roles = \Spatie\Permission\Models\Role::all();
         return view('admin.user_management', compact('users', 'roles'));
     }
