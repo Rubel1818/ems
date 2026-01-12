@@ -77,7 +77,7 @@
         }
 
         footer {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(36, 35, 35, 0.5);
             backdrop-filter: blur(5px);
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.9rem;

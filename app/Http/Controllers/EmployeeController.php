@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\section;
+use App\Models\StuffDesignation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -14,6 +16,7 @@ class EmployeeController extends Controller
 {
     public function index()
     {
+
         $user = auth()->user();
 
         // Admin: all employees, latest first
@@ -33,14 +36,18 @@ class EmployeeController extends Controller
         }
         // UserDashboard: only approved employees
         else {
+
             $employees = Employee::with(['district', 'section', 'stuffDesignation'])
                 ->where('status', 1)
                 ->get();
+
+            //dd($employees);
 
             //return view('employees.dashboard', compact('employees'));
             // Empty collection for other roles
             return view('employees.dashboard', compact('employees'));
         }
+        // Stuff: only approved employees   
         //  return view('employees.index', compact('employees'));
     }
 
@@ -114,9 +121,21 @@ class EmployeeController extends Controller
         $employee->delete();
         return back()->with('success', 'ডাটা ডিলিট হয়েছে');
     }
-    public function show(Employee $employee)
+    public function show($id)
     {
-        return view('employees.detail_view', compact('employee'));
+
+        $employee = Employee::with(['section', 'stuffDesignation'])->findOrFail($id);
+
+        // Fetch histories for this employee
+        $histories = $employee->histories()->with(['section', 'designation'])->get();
+
+        // Fetch sections and designations for the form dropdown
+        $sections = Section::all();
+        $designations = StuffDesignation::all();
+
+        return view('employees.detail_view', compact('employee', 'histories', 'sections', 'designations'));
+
+        //return view('employees.detail_view', compact('employee'));
     }
 
     public function showPrl()

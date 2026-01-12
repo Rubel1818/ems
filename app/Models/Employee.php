@@ -33,6 +33,7 @@ class Employee extends Model
         'district_id',
         'stuff_designation_id',
         'section_id',
+        'user_id',
     ];
     // Employee belongs to District
     public function district()
@@ -48,6 +49,11 @@ class Employee extends Model
     {
         return $this->belongsTo(Section::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     protected $casts = [
         'birth_date' => 'date',
     ];
@@ -60,5 +66,9 @@ class Employee extends Model
         return $this->birth_date
             ? $this->birth_date->copy()->addYears(58)
             : null;
+    }
+    public function histories()
+    {
+        return $this->hasMany(History::class);
     }
 }

@@ -297,14 +297,38 @@
                                 <i class="bi bi-file-earmark-pdf"></i> নথিপত্র (Documents)
                             </div>
 
+
+
                             <div class="row mb-5">
                                 <div class="col-md-12">
                                     <div class="p-4 border border-dashed rounded-3 bg-light text-center">
                                         <label class="form-label d-block fw-bold">স্ক্যানকৃত সার্ভিসবুক আপলোড
                                             করুন</label>
+
+                                        @if ($employee->service_book)
+                                            <div class="mb-3">
+                                                <div
+                                                    class="d-inline-flex align-items-center p-2 border rounded bg-white shadow-sm">
+                                                    <i class="bi bi-file-earmark-check text-success fs-4 me-2"></i>
+                                                    <div class="text-start">
+                                                        <small class="text-muted d-block">বর্তমান ফাইল:</small>
+                                                        <a href="{{ asset('storage/' . $employee->service_book) }}"
+                                                            target="_blank"
+                                                            class="text-decoration-none fw-bold text-success">
+                                                            ভিউ করুন (View Existing File)
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+
                                         <input type="file" name="service_book" class="form-control w-50 mx-auto">
-                                        <small class="text-muted mt-2 d-block">ফাইল ফরম্যাট: PDF, JPG (সর্বোচ্চ ৫
-                                            মেগাবাইট)</small>
+
+                                        <small class="text-muted mt-2 d-block">
+                                            ফাইল ফরম্যাট: PDF, JPG (সর্বোচ্চ ৫ মেগাবাইট) <br>
+                                            <span class="text-info">(নতুন ফাইল আপলোড করলে আগেরটি পরিবর্তন হয়ে
+                                                যাবে)</span>
+                                        </small>
                                     </div>
                                 </div>
                             </div>

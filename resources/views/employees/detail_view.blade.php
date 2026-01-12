@@ -10,89 +10,117 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
+        :root {
+            /* Emerald to Olive Gradient based on your image */
+            --primary-gradient: linear-gradient(90deg, #f3f8f7 0%, #96b07d 60%, #a4a433 100%);
+            --emerald-deep: #124e43;
+        }
+
         body {
-            background-color: #f0f2f5;
+            background-color: #f1f5f9;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .profile-container {
-            background: #fff;
+            background: #ffffff;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             border: none;
         }
 
+        /* The Header Background Color */
         .profile-header-bg {
-            background: linear-gradient(135deg, #0d6efd 0%, #004085 100%);
-            height: 120px;
+            background: var(--primary-gradient);
+            height: 180px;
+            position: relative;
         }
 
+        /* Positioning the info and picture to be visible */
         .profile-main-info {
-            margin-top: -70px;
-            padding: 0 30px 30px;
+            margin-top: -80px;
+            padding: 0 40px 40px;
+            position: relative;
+            z-index: 2;
         }
 
+        /* Profile Image Visibility Styling */
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: 170px;
+            height: 170px;
             object-fit: cover;
-            border: 5px solid #fff;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 8px solid #ffffff;
+            /* Thick white border to make it pop */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
         }
 
         .section-card {
-            border: 1px solid #eef0f2;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: #fdfdfd;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            background-color: #ffffff;
         }
 
         .section-title {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #0d6efd;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 8px;
+            color: var(--emerald-deep);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
             display: flex;
             align-items: center;
         }
 
         .section-title i {
-            margin-right: 10px;
+            margin-right: 12px;
+            color: #10b981;
         }
 
         .info-label {
-            color: #6c757d;
+            color: #64748b;
             font-weight: 600;
-            font-size: 0.9rem;
-            width: 40%;
+            width: 35%;
         }
 
         .info-value {
-            color: #212529;
+            color: #1e293b;
             font-weight: 500;
         }
 
-        .table-custom tr {
-            border-bottom: 1px solid #f1f1f1;
+        /* Duration Badge as requested */
+        .badge-duration {
+            background-color: #ecfdf5;
+            color: #065f46;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            padding: 6px 14px;
+            border: 1px solid #d1fae5;
+            display: inline-flex;
+            align-items: center;
         }
 
-        .table-custom tr:last-child {
-            border-bottom: none;
-        }
-
-        .table-custom td {
-            padding: 10px 5px;
+        .btn-emerald {
+            background-color: var(--emerald-deep);
+            color: white;
             border: none;
         }
 
-        .btn-download {
-            border-radius: 50px;
-            padding: 8px 20px;
-            font-weight: 600;
+        .btn-emerald:hover {
+            background-color: #0b3d35;
+            color: white;
+        }
+
+        .employee-id-tag {
+            background-color: var(--emerald-deep);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: inline-block;
         }
     </style>
 </head>
@@ -108,12 +136,12 @@
             <main class="col-md-9 col-lg-10 p-4">
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <a href="{{ url()->previous() }}" class="btn btn-outline-secondary btn-sm shadow-sm">
-                        <i class="bi bi-arrow-left"></i> ফিরে যান
+                    <a href="{{ url()->previous() }}" class="btn btn-white border shadow-sm px-3 rounded-3 bg-white">
+                        <i class="bi bi-arrow-left me-1"></i> ফিরে যান
                     </a>
                     <a href="{{ route('employees.download-pdf', $employee->id) }}"
-                        class="btn btn-danger btn-download shadow-sm">
-                        <i class="bi bi-file-pdf"></i> PDF ডাউনলোড করুন
+                        class="btn btn-danger px-4 rounded-3 shadow-sm">
+                        <i class="bi bi-file-pdf me-1"></i> PDF ডাউনলোড করুন
                     </a>
                 </div>
 
@@ -124,23 +152,23 @@
                         <div class="row align-items-end">
                             <div class="col-md-auto text-center text-md-start">
                                 <img src="{{ $employee->photo ? asset('storage/' . $employee->photo) : asset('images/user.png') }}"
-                                    class="rounded-circle profile-img mb-3" alt="Photo">
+                                    class="rounded-circle profile-img mb-3" alt="Employee Photo">
                             </div>
-                            <div class="col-md mt-3 mt-md-0 text-center text-md-start">
-                                <h2 class="fw-bold mb-1">{{ $employee->name_bn }}</h2>
-                                <p class="text-muted mb-2 fs-5">
-                                    {{ optional($employee->stuffDesignation)->designation_name_bn }}</p>
-                                <span class="badge bg-primary px-3 py-2">ID: {{ $employee->employee_id }}</span>
+                            <div class="col-md mt-3 mt-md-0 text-center text-md-start pb-2">
+                                <h1 class="fw-bold mb-1" style="color: #0f172a;">{{ $employee->name_bn }}</h1>
+                                <p class="text-secondary mb-2 fs-5">
+                                    <i class="bi bi-briefcase-fill me-1 text-muted"></i>
+                                    {{ optional($employee->stuffDesignation)->designation_name_bn }}
+                                </p>
+                                <div class="employee-id-tag shadow-sm">আইডি: {{ $employee->employee_id }}</div>
                             </div>
                         </div>
 
-                        <hr class="my-5">
-
-                        <div class="row">
+                        <div class="row mt-5">
                             <div class="col-lg-6">
-                                <div class="section-card">
-                                    <h6 class="section-title"><i class="bi bi-person-badge"></i> ব্যক্তিগত তথ্য</h6>
-                                    <table class="table table-custom mb-0">
+                                <div class="section-card h-100 shadow-sm">
+                                    <h6 class="section-title"><i class="bi bi-person-circle"></i> ব্যক্তিগত তথ্য</h6>
+                                    <table class="table table-borderless mb-0">
                                         <tr>
                                             <td class="info-label">নাম (ইংরেজি)</td>
                                             <td class="info-value">{{ $employee->name_en }}</td>
@@ -167,47 +195,171 @@
                             </div>
 
                             <div class="col-lg-6">
-                                <div class="section-card shadow-sm" style="border-left: 4px solid #0d6efd;">
-                                    <h6 class="section-title"><i class="bi bi-building"></i> অফিস সংক্রান্ত তথ্য</h6>
-                                    <table class="table table-custom mb-0">
+                                <div class="section-card h-100 shadow-sm">
+                                    <h6 class="section-title"><i class="bi bi-building-check"></i> অফিস সংক্রান্ত তথ্য
+                                    </h6>
+                                    <table class="table table-borderless mb-0">
                                         <tr>
                                             <td class="info-label">শাখা</td>
-                                            <td class="info-value text-primary fw-bold">
+                                            <td class="info-value fw-bold text-success">
                                                 {{ optional($employee->section)->section_name_bn }}</td>
                                         </tr>
+
                                         <tr>
-                                            <td class="info-label">দপ্তরে যোগদান</td>
-                                            <td class="info-value">{{ $employee->office_start_date }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="info-label">চাকরি যোগদানের তারিখ</td>
+                                            <td class="info-label">চাকরি যোগদান</td>
                                             <td class="info-value">{{ $employee->joining_date }}</td>
                                         </tr>
                                         <tr>
-                                            <td class="info-label">স্থায়ীকরণের তারিখ</td>
+                                            <td class="info-label">স্থায়ীকরণ</td>
                                             <td class="info-value">{{ $employee->confirmation_date }}</td>
                                         </tr>
                                         <tr>
                                             <td class="info-label">PRL তারিখ</td>
-                                            <td class="info-value text-danger">{{ $employee->prl_date }}</td>
+                                            <td class="info-value text-danger fw-bold">{{ $employee->prl_date }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">সার্ভিস বুক</td>
+                                            <td class="info-value">
+                                                @if ($employee->service_book)
+                                                    <a href="{{ asset('storage/' . $employee->service_book) }}"
+                                                        target="_blank"
+                                                        class="btn btn-sm btn-outline-success rounded-pill px-3">
+                                                        <i class="bi bi-cloud-arrow-down-fill me-1"></i> ডাউনলোড করুন
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted small">সংযুক্ত নেই</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
+                            </div>
 
-                                <div class="section-card mt-4">
-                                    <h6 class="section-title"><i class="bi bi-file-earmark-text"></i> প্রয়োজনীয়
-                                        ডকুমেন্ট</h6>
-                                    <div class="d-grid">
-                                        @if ($employee->service_book)
-                                            <a href="{{ asset('storage/' . $employee->service_book) }}" target="_blank"
-                                                class="btn btn-outline-primary">
-                                                <i class="bi bi-file-earmark-pdf-fill"></i> সার্ভিস বুক ডাউনলোড করুন
-                                            </a>
-                                        @else
-                                            <div class="alert alert-light border text-center text-muted mb-0">
-                                                কোনো ফাইল আপলোড করা নেই
+                            <div class="col-12 mt-4">
+                                <div class="section-card shadow-sm">
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <h6 class="section-title mb-0 border-0"><i class="bi bi-clock-history"></i>
+                                            কর্মকাল হিস্ট্রি</h6>
+                                        <button id="toggleHistoryFormBtn"
+                                            class="btn btn-emerald btn-sm px-3 rounded-pill">
+                                            <i class="bi bi-plus-lg me-1"></i> নতুন তথ্য যোগ করুন
+                                        </button>
+                                    </div>
+
+                                    <div id="historyTableView" class="table-responsive">
+                                        <table class="table table-hover align-middle">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>শাখা</th>
+                                                    <th>পদবি</th>
+                                                    <th>শুরুর তারিখ</th>
+                                                    <th>শেষ তারিখ</th>
+                                                    <th class="text-success">মোট কর্মকাল</th>
+                                                    <th class="text-center">অ্যাকশন</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($histories as $history)
+                                                    @php
+                                                        $start = \Carbon\Carbon::parse($history->start_date);
+                                                        $end = $history->end_date
+                                                            ? \Carbon\Carbon::parse($history->end_date)
+                                                            : \Carbon\Carbon::now();
+                                                        $diff = $start->diff($end);
+
+                                                        $parts = [];
+                                                        if ($diff->y > 0) {
+                                                            $parts[] = $diff->y . ' বছর';
+                                                        }
+                                                        if ($diff->m > 0) {
+                                                            $parts[] = $diff->m . ' মাস';
+                                                        }
+                                                        if ($diff->d > 0) {
+                                                            $parts[] = $diff->d . ' দিন';
+                                                        }
+                                                        $duration = count($parts) > 0 ? implode(', ', $parts) : '০ দিন';
+                                                    @endphp
+                                                    <tr>
+                                                        <td class="fw-bold">{{ $history->section->section_name_bn }}
+                                                        </td>
+                                                        <td>{{ $history->designation->designation_name_bn }}</td>
+                                                        <td>{{ $history->start_date }}</td>
+                                                        <td>{{ $history->end_date ?? 'বর্তমান' }}</td>
+                                                        <td><span
+                                                                class="badge-duration shadow-sm">{{ $duration }}</span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div class="btn-group">
+                                                                <button
+                                                                    class="btn btn-sm btn-outline-warning editHistoryBtn"
+                                                                    data-history-id="{{ $history->id }}"><i
+                                                                        class="bi bi-pencil"></i></button>
+                                                                <form method="POST"
+                                                                    action="{{ route('employees.histories.destroy', [$employee->id, $history->id]) }}"
+                                                                    class="d-inline">
+                                                                    @csrf @method('DELETE')
+                                                                    <button class="btn btn-sm btn-outline-danger"
+                                                                        onclick="return confirm('নিশ্চিত?')"><i
+                                                                            class="bi bi-trash"></i></button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="6" class="text-center py-4 text-muted">কোনো তথ্য
+                                                            নেই</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div id="historyFormView" style="display:none;">
+                                        <div class="p-4 bg-light rounded-3">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <h5 class="fw-bold">নতুন তথ্য যোগ করুন</h5>
+                                                <button id="backToTableBtn" class="btn btn-sm btn-secondary">ফিরে
+                                                    যান</button>
                                             </div>
-                                        @endif
+                                            <form method="POST"
+                                                action="{{ route('employees.histories.store', $employee->id) }}">
+                                                @csrf
+                                                <div class="row g-3">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label small fw-bold">শাখা</label>
+                                                        <select name="section_id"
+                                                            class="form-select border-0 shadow-sm" required>
+                                                            <option value="">নির্বাচন করুন</option>
+                                                            @foreach ($sections as $section)
+                                                                <option value="{{ $section->id }}">
+                                                                    {{ $section->section_name_bn }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label small fw-bold">পদবি</label>
+                                                        <select name="designation_id"
+                                                            class="form-select border-0 shadow-sm" required>
+                                                            <option value="">নির্বাচন করুন</option>
+                                                            @foreach ($designations as $designation)
+                                                                <option value="{{ $designation->id }}">
+                                                                    {{ $designation->designation_name_bn }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label small fw-bold">শুরুর তারিখ</label>
+                                                        <input type="date" name="start_date"
+                                                            class="form-control border-0 shadow-sm" required>
+                                                    </div>
+                                                    <div class="col-12 text-end">
+                                                        <button class="btn btn-emerald px-5 py-2 shadow">সংরক্ষণ
+                                                            করুন</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -219,6 +371,26 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('toggleHistoryFormBtn');
+            const backBtn = document.getElementById('backToTableBtn');
+            const tableView = document.getElementById('historyTableView');
+            const formView = document.getElementById('historyFormView');
+
+            toggleBtn.addEventListener('click', () => {
+                tableView.style.display = 'none';
+                formView.style.display = 'block';
+                toggleBtn.style.display = 'none';
+            });
+
+            backBtn.addEventListener('click', () => {
+                formView.style.display = 'none';
+                tableView.style.display = 'block';
+                toggleBtn.style.display = 'block';
+            });
+        });
+    </script>
 </body>
 
 </html>

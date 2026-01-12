@@ -16,11 +16,7 @@
         <div class="collapse navbar-collapse justify-content-end" id="cabinetNavbar">
             <ul class="navbar-nav align-items-center">
 
-                <li class="nav-item px-2">
-                    <a class="nav-link text-white-50 hover-white" href="{{ route('dashboard') }}">
-                        <i class="bi bi-speedometer2 me-1"></i> ড্যাশবোর্ড
-                    </a>
-                </li>
+
 
                 <li class="nav-item dropdown ms-lg-3">
                     <a class="nav-link dropdown-toggle d-flex align-items-center bg-white bg-opacity-10 rounded-pill px-3 py-1"

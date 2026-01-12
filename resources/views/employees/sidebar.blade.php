@@ -6,38 +6,51 @@
                 <i class="bi bi-person-circle text-white-50 fs-1"></i>
             </div>
             <h6 class="text-white small mb-0">{{ Auth::user()->name }}</h6>
-            <span class="badge bg-success" style="font-size: 0.6rem;">অনলাইন</span>
+            <span class="badge bg-success mt-1" style="font-size: 0.6rem; padding: 2px 8px;">অনলাইন</span>
         </div>
 
-        <ul class="nav flex-column gap-2">
 
-            @role('admin|employee')
-                @if (!request()->routeIs('employees.create'))
-                    <li class="nav-item">
-                        <a class="nav-link custom-link" href="{{ route('employees.create') }}">
-                            <i class="bi bi-plus-circle-fill me-2"></i>
-                            <span>নতুন যোগ করুন</span>
-                        </a>
-                    </li>
-                @endif
+        <ul class="nav flex-column gap-2">
+            @role('stuff')
+                <li class="nav-item">
+                    <a href="{{ route('NormalUser.create') }}"
+                        class="btn btn-success rounded-pill px-4 py-2 shadow-sm fw-bold">
+                        <i class="bi bi-person-plus-fill me-2"></i>কর্মচারীর তথ্য যোগকরুন
+                    </a>
+                </li>
+            @endrole
+            @role('admin|employee|userdashboard|')
+                <li class="nav-item">
+                    <a class="nav-link custom-link {{ Request::is('dashboard*') ? 'active' : '' }}"
+                        href="{{ route('dashboardView') }}">
+                        <i class="fa-solid fa-users-viewfinder me-3"></i>
+                        <span>ড্যাশবোর্ড</span>
+                    </a>
+                </li>
+            @endrole
+            @role('admin')
+                <li class="nav-item">
+                    <a class="nav-link custom-link {{ Request::is('admin/users*') ? 'active' : '' }}"
+                        href="{{ url('admin/users') }}">
+                        <i class="fa-solid fa-users-gear me-3"></i>
+                        <span>ইউজার ম্যানেজমেন্ট</span>
+                    </a>
+                </li>
             @endrole
 
-            <li class="nav-item">
-                <a class="nav-link custom-link {{ request()->routeIs('profile.*') ? 'active' : '' }}"
-                    href="{{ route('profile.edit') }}">
-                    <i class="bi bi-person-fill me-2"></i>
-                    <span>প্রোফাইল</span>
-                </a>
-            </li>
+            @role('admin|employee')
+                <li class="nav-item">
+                    <a class="nav-link custom-link {{ Request::is('employees*') ? 'active' : '' }}"
+                        href="{{ route('employees.index') }}">
+                        <i class="fa-solid fa-users-line me-3"></i>
+                        <span>কর্মচারী তালিকা</span>
+                    </a>
+                </li>
+            @endrole
 
-            <li class="nav-item">
-                <a class="nav-link custom-link" href="#">
-                    <i class="bi bi-gear-fill me-2"></i>
-                    <span>সেটিংস</span>
-                </a>
-            </li>
 
-            <li class="nav-item mt-4 pt-4 border-top border-secondary border-opacity-25">
+
+            <li class="nav-item mt-4 pt-4 border-top border-secondary border-opacity-10">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button class="btn logout-btn w-100 d-flex align-items-center justify-content-center">
