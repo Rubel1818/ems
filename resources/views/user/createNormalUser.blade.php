@@ -5,10 +5,8 @@
     <meta charset="UTF-8">
     <title>নতুন কর্মচারী যোগ করুন | মন্ত্রিপরিষদ বিভাগ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
     <style>
         body {
             background-color: #f0f2f5;
@@ -88,14 +86,10 @@
 </head>
 
 <body>
-
     @include('employees.head_navbar')
-
     <div class="container-fluid">
         <div class="row">
-
             @include('user.sidebar')
-
             <main class="col-md-9 col-lg-10 p-4">
 
                 <div class="card main-card">
@@ -111,7 +105,26 @@
                                 <i class="bi bi-arrow-left"></i> তালিকা ফিরে যান
                             </a>
                         </div>
+                        <div class="container mt-3">
+                            {{-- ভ্যালিডেশন এরর মেসেজ (যেমন: Unique User ID) --}}
+                            @if ($errors->any())
+                                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert"
+                                    style="border-left: 5px solid #dc3545;">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-exclamation-octagon-fill me-2 fs-4"></i>
+                                        <div>
 
+                                            <div>{{ $error }}</div>
+
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            
+                        </div>
                         <form action="{{ route('NormalUser.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
@@ -184,7 +197,8 @@
                                 <div class="col-md-6">
                                     <div class="card p-3 border-light shadow-sm">
                                         <label class="form-label">স্থায়ী ঠিকানা (বাংলা)</label>
-                                        <textarea name="permanent_address_bn" rows="2" class="form-control mb-2" placeholder="গ্রাম, রাস্তা, ডাকঘর..."></textarea>
+                                        <textarea name="permanent_address_bn" rows="2" class="form-control mb-2"
+                                            placeholder="গ্রাম, রাস্তা, ডাকঘর..."></textarea>
 
                                         <label class="form-label">জেলা</label>
                                         <select name="district_id" class="form-select" required>

@@ -1,88 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
+<style>
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Inter', 'Hind Siliguri', sans-serif;
+        margin: 0;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management | Admin Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&family=Inter:wght@400;600&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    /* Layout Structure */
+    .main-wrapper {
+        display: flex;
+        min-height: 100vh;
+    }
 
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Inter', 'Hind Siliguri', sans-serif;
-            margin: 0;
-        }
+    .content-area {
+        flex-grow: 1;
+        padding: 20px;
+        margin-top: 60px;
+        /* Adjust based on your header height */
+        transition: all 0.3s;
+    }
 
-        /* Layout Structure */
-        .main-wrapper {
-            display: flex;
-            min-height: 100vh;
-        }
+    .main-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+        background: white;
+    }
 
-        .content-area {
-            flex-grow: 1;
-            padding: 20px;
-            margin-top: 60px;
-            /* Adjust based on your header height */
-            transition: all 0.3s;
-        }
+    .table thead th {
+        background-color: #f1f4f8;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+        color: #555;
+        border-top: none;
+    }
 
-        .main-card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
-            background: white;
-        }
+    .badge {
+        padding: 0.5em 0.8em;
+        font-weight: 500;
+        border-radius: 6px;
+    }
 
-        .table thead th {
-            background-color: #f1f4f8;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
-            color: #555;
-            border-top: none;
-        }
+    .bg-success-soft {
+        background-color: #05bc5e;
+        color: #28a745;
+    }
 
-        .badge {
-            padding: 0.5em 0.8em;
-            font-weight: 500;
-            border-radius: 6px;
-        }
+    .bg-warning-soft {
+        background-color: #eb9012;
+        color: #ffc107;
+    }
 
-        .bg-success-soft {
-            background-color: #05bc5e;
-            color: #28a745;
-        }
+    .btn-approve {
+        background-color: #4e73df;
+        border: none;
+        color: white;
+        transition: all 0.2s;
+    }
 
-        .bg-warning-soft {
-            background-color: #eb9012;
-            color: #ffc107;
-        }
+    .btn-approve:hover {
+        background-color: #2e59d9;
+        transform: translateY(-1px);
+        color: white;
+    }
 
-        .btn-approve {
-            background-color: #4e73df;
-            border: none;
-            color: white;
-            transition: all 0.2s;
-        }
-
-        .btn-approve:hover {
-            background-color: #2e59d9;
-            transform: translateY(-1px);
-            color: white;
-        }
-
-        .page-header {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #e3e6f0;
-        }
-    </style>
+    .page-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e3e6f0;
+    }
+</style>
 </head>
 
 <body>
@@ -100,8 +87,8 @@
                             <i class="fas fa-arrow-left me-2"></i>ড্যাশবোর্ড (Back)
                         </a>
                         <div>
-                            <h1 class="h3 mb-0 text-gray-800">User Management</h1>
-                            <p class="text-muted mb-0">Manage permissions and account approvals.</p>
+                            <h1 class="h3 mb-0 text-gray-800">ইউজার ম্যানেজমেন্ট</h1>
+                            <p class="text-muted mb-0">অনুমতি এবং অ্যাকাউন্ট অনুমোদন পরিচালনা করুন।</p>
                         </div>
                     </div>
                     <button class="btn btn-outline-primary btn-sm">

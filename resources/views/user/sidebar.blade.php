@@ -13,10 +13,15 @@
         <ul class="nav flex-column gap-2">
             @role('stuff')
                 @php
-                    // চেক করা হচ্ছে ইউজারের তথ্য অলরেডি আছে কি না
-                    $hasInformation = auth()->user()->employee()->exists();
+                    // ইউজারের এমপ্লয়ী তথ্যটি আনা হচ্ছে
+                    $employee = auth()->user()->employee;
+                    $hasInformation = $employee !== null;
+
+                    // চেক করা হচ্ছে এডমিন এন্ট্রিটি এপ্রুভ করেছে কি না (ধরে নিচ্ছি status == 1 মানে এপ্রুভড)
+                    $isApproved = $hasInformation && $employee->status == 1;
                 @endphp
 
+                {{-- প্রথম বাটন: তথ্য যোগ করুন --}}
                 <li class="nav-item me-2">
                     @if (!$hasInformation)
                         {{-- তথ্য না থাকলে বাটন একটিভ থাকবে --}}
@@ -25,26 +30,33 @@
                             <i class="bi bi-person-plus-fill me-2"></i>আপনার তথ্য যোগ করুন
                         </a>
                     @else
-                        {{-- তথ্য থাকলে বাটন ডিসেবল হয়ে যাবে --}}
+                        {{-- তথ্য অলরেডি যোগ করা থাকলে এটি ডিসেবল থাকবে --}}
                         <button class="btn btn-secondary rounded-pill px-4 py-2 shadow-sm fw-bold" disabled>
-                            <i class="bi bi-check-circle-fill me-2"></i>তথ্য যোগ করা হয়েছে
+                            <i class="bi bi-check-circle-fill me-2"></i>তথ্য যোগ করা হয়েছে
                         </button>
                     @endif
                 </li>
 
+                {{-- দ্বিতীয় বাটন: তথ্য দেখুন অথবা এপ্রুভাল স্ট্যাটাস --}}
                 <li class="nav-item">
-                    @if ($hasInformation)
-                        {{-- তথ্য থাকলে এই বাটনটি একটিভ হবে --}}
-                        <a href="{{ route('NormalUser.Dashboard') }}"
-                            class="btn btn-primary rounded-pill px-4 py-2 shadow-sm fw-bold">
-                            <i class="bi bi-person-lines-fill me-2"></i>আপনার তথ্য দেখুন
-                        </a>
-                    @else
-                        {{-- তথ্য না থাকলে এটি ডিসেবল বা ইন-একটিভ থাকবে --}}
+                    @if (!$hasInformation)
+                        {{-- তথ্য একদমই না থাকলে --}}
                         <button class="btn btn-outline-primary rounded-pill px-4 py-2 shadow-sm fw-bold disabled"
                             style="opacity: 0.5; cursor: not-allowed;">
                             <i class="bi bi-lock-fill me-2"></i>তথ্য দেখুন (আগে যোগ করুন)
                         </button>
+                    @elseif ($hasInformation && !$isApproved)
+                        {{-- তথ্য আছে কিন্তু এডমিন এখনো এপ্রুভ করেনি --}}
+                        <button class="btn btn-warning rounded-pill px-4 py-2 shadow-sm fw-bold" disabled
+                            style="color: #856404; background-color: #fff3cd; border-color: #ffeeba;">
+                            <i class="bi bi-hourglass-split me-2"></i>এডমিন অনুমোদনের অপেক্ষায়...
+                        </button>
+                    @else
+                        {{-- তথ্য আছে এবং এডমিন এপ্রুভ করেছে --}}
+                        <a href="{{ route('NormalUser.Dashboard') }}"
+                            class="btn btn-primary rounded-pill px-4 py-2 shadow-sm fw-bold">
+                            <i class="bi bi-person-lines-fill me-2"></i>আপনার তথ্য দেখুন
+                        </a>
                     @endif
                 </li>
             @endrole
