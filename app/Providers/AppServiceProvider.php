@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // সব ভিউতে $allDesignations ভেরিয়েবলটি পাঠিয়ে দিন
+        view()->share('allDesignations', \App\Models\StuffDesignation::all());
+        Paginator::useBootstrapFive();
     }
 }

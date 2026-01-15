@@ -38,10 +38,10 @@
 
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">নাম (Name)</label>
-                                    <input type="text" name="name"
-                                        class="form-control @error('name') is-invalid @enderror"
-                                        value="{{ old('name', $user->name) }}" required autocomplete="name">
-                                    @error('name')
+                                    <input type="text" name="name_eng"
+                                        class="form-control @error('name_eng') is-invalid @enderror"
+                                        value="{{ old('name_eng', $user->name_eng) }}" required autocomplete="name">
+                                    @error('name_eng')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

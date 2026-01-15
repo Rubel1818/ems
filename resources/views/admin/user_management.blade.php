@@ -1,11 +1,16 @@
 <style>
+    :root {
+        --primary-color: #006a4e;
+        --bg-soft: #f4f7f6;
+        --dark-blue: #2c3e50;
+    }
+
     body {
-        background-color: #f8f9fa;
-        font-family: 'Inter', 'Hind Siliguri', sans-serif;
+        background-color: var(--bg-soft);
+        font-family: 'Hind Siliguri', sans-serif;
         margin: 0;
     }
 
-    /* Layout Structure */
     .main-wrapper {
         display: flex;
         min-height: 100vh;
@@ -13,61 +18,86 @@
 
     .content-area {
         flex-grow: 1;
-        padding: 20px;
-        margin-top: 60px;
-        /* Adjust based on your header height */
+        padding: 25px;
         transition: all 0.3s;
     }
 
+    /* Card Styling */
     .main-card {
         border: none;
-        border-radius: 15px;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         background: white;
-    }
-
-    .table thead th {
-        background-color: #f1f4f8;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 0.05em;
-        color: #555;
-        border-top: none;
-    }
-
-    .badge {
-        padding: 0.5em 0.8em;
-        font-weight: 500;
-        border-radius: 6px;
-    }
-
-    .bg-success-soft {
-        background-color: #05bc5e;
-        color: #28a745;
-    }
-
-    .bg-warning-soft {
-        background-color: #eb9012;
-        color: #ffc107;
-    }
-
-    .btn-approve {
-        background-color: #4e73df;
-        border: none;
-        color: white;
-        transition: all 0.2s;
-    }
-
-    .btn-approve:hover {
-        background-color: #2e59d9;
-        transform: translateY(-1px);
-        color: white;
+        border-top: 5px solid var(--primary-color);
     }
 
     .page-header {
         margin-bottom: 2rem;
         padding-bottom: 1rem;
-        border-bottom: 2px solid #e3e6f0;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    /* Table Design */
+    .table thead th {
+        background-color: #f8f9fa;
+        font-weight: 700;
+        color: var(--primary-color);
+        padding: 15px;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    /* Status Badges */
+    .status-badge {
+        padding: 8px 16px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        border-radius: 50px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .badge-approved {
+        background-color: #198754 !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(25, 135, 84, 0.3);
+    }
+
+    .badge-pending {
+        background-color: #ffc107 !important;
+        color: #000000 !important;
+        box-shadow: 0 2px 6px rgba(255, 193, 7, 0.3);
+    }
+
+    .avatar-box {
+        width: 42px;
+        height: 42px;
+        background-color: #e9ecef;
+        color: var(--primary-color);
+        border: 2px solid #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-action {
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-weight: 600;
+        transition: 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Pagination Fix */
+    .pagination svg {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+    }
+
+    /* ডিলিট আইকন নিশ্চিতভাবে দেখানোর জন্য */
+    .fa-trash-can,
+    .fa-trash-alt {
+        display: inline-block !important;
+        visibility: visible !important;
     }
 </style>
 </head>
@@ -80,20 +110,17 @@
 
         <main class="content-area">
             <div class="container-fluid">
+
                 <div class="d-flex justify-content-between align-items-center page-header">
-                    <div class="d-flex align-items-center">
-                        <a href="{{ route('employees.index') }}"
-                            class="btn btn-light border btn-sm me-3 px-3 rounded-pill shadow-sm">
-                            <i class="fas fa-arrow-left me-2"></i>ড্যাশবোর্ড (Back)
-                        </a>
-                        <div>
-                            <h1 class="h3 mb-0 text-gray-800">ইউজার ম্যানেজমেন্ট</h1>
-                            <p class="text-muted mb-0">অনুমতি এবং অ্যাকাউন্ট অনুমোদন পরিচালনা করুন।</p>
-                        </div>
+                    <div>
+                        <h2 class="h3 mb-1 fw-bold text-dark">ইউজার ম্যানেজমেন্ট</h2>
+                        <p class="text-muted mb-0 small">অ্যাডমিন প্যানেল: ইউজার রোল এবং অ্যাকাউন্টের অনুমতি পরিচালনা
+                            করুন।</p>
                     </div>
-                    <button class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-download me-1"></i> Export Report
-                    </button>
+                    <a href="{{ route('employees.index') }}"
+                        class="btn btn-outline-dark btn-sm rounded-pill px-4 shadow-sm">
+                        <i class="fas fa-arrow-left me-2"></i>ড্যাশবোর্ড
+                    </a>
                 </div>
 
                 <div class="card main-card">
@@ -102,42 +129,48 @@
                             <table class="table table-hover align-middle mb-0">
                                 <thead>
                                     <tr>
-                                        <th class="ps-4">নাম (Name)</th>
-                                        <th>স্ট্যাটাস (Status)</th>
-                                        <th>বর্তমান রোল (Role)</th>
-                                        <th class="text-end pe-4">অ্যাকশন (Action)</th>
+                                        <th class="ps-4">ইউজার তথ্য</th>
+                                        <th class="text-center">স্ট্যাটাস</th>
+                                        <th class="text-center">রোল (Role)</th>
+                                        <th class="text-end pe-4">অ্যাকশন</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $user)
+                                    @forelse ($users as $user)
                                         <tr>
                                             <td class="ps-4">
                                                 <div class="d-flex align-items-center">
-                                                    <div class="avatar-sm me-3 bg-light rounded-circle d-flex align-items-center justify-content-center"
-                                                        style="width: 40px; height: 40px;">
+                                                    <div
+                                                        class="avatar-box rounded-circle d-flex align-items-center justify-content-center me-3">
                                                         <span
-                                                            class="text-primary fw-bold">{{ substr($user->name, 0, 1) }}</span>
+                                                            class="fw-bold">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
                                                     </div>
-                                                    <span class="fw-semibold text-dark">{{ $user->name }}</span>
+                                                    <div>
+                                                        <div class="fw-bold text-dark mb-0">{{ $user->name }}</div>
+                                                        <div class="text-muted small">{{ $user->email }}</div>
+                                                    </div>
                                                 </div>
                                             </td>
-                                            <td>
+
+                                            <td class="text-center">
                                                 @if ($user->is_approved)
-                                                    <span class="badge bg-success-soft">
-                                                        <i class="fas fa-check-circle me-1"></i> Approved
+                                                    <span class="status-badge badge-approved">
+                                                        <i class="fas fa-check-circle me-2"></i>অনুমোদিত
                                                     </span>
                                                 @else
-                                                    <span class="badge bg-warning-soft">
-                                                        <i class="fas fa-clock me-1"></i> Pending
+                                                    <span class="status-badge badge-pending">
+                                                        <i class="fas fa-clock me-2"></i>অপেক্ষমান
                                                     </span>
                                                 @endif
                                             </td>
-                                            <td>
+
+                                            <td class="text-center">
                                                 <form action="{{ route('admin.users.role', $user->id) }}"
                                                     method="POST">
                                                     @csrf
                                                     <select name="role" onchange="this.form.submit()"
-                                                        class="form-select form-select-sm w-auto">
+                                                        class="form-select form-select-sm border-success fw-bold shadow-sm mx-auto"
+                                                        style="width: 140px;">
                                                         @foreach ($roles as $role)
                                                             <option value="{{ $role->name }}"
                                                                 {{ $user->hasRole($role->name) ? 'selected' : '' }}>
@@ -147,26 +180,49 @@
                                                     </select>
                                                 </form>
                                             </td>
+
                                             <td class="text-end pe-4">
-                                                @if (!$user->is_approved)
-                                                    <form action="{{ route('admin.users.approve', $user->id) }}"
-                                                        method="POST" class="d-inline">
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    @if (!$user->is_approved)
+                                                        <form action="{{ route('admin.users.approve', $user->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="btn btn-sm btn-success btn-action shadow-sm">
+                                                                <i class="fas fa-user-check me-1"></i> Approve
+                                                            </button>
+                                                        </form>
+                                                    @endif
+
+                                                    <form action="{{ route('admin.users.destroy', $user->id) }}"
+                                                        method="POST"
+                                                        onsubmit="return confirm('আপনি কি নিশ্চিত যে এই ইউজারটিকে মুছে ফেলতে চান?')">
                                                         @csrf
+                                                        @method('DELETE')
                                                         <button type="submit"
-                                                            class="btn btn-sm btn-primary btn-approve px-3">
-                                                            Approve Now
+                                                            class="btn btn-sm btn-danger btn-action shadow-sm"
+                                                            title="ডিলিট করুন">
+                                                            <i class="fa-solid fa-trash-can"></i>
                                                         </button>
                                                     </form>
-                                                @else
-                                                    <button class="btn btn-sm btn-light text-muted" disabled>
-                                                        No Actions
-                                                    </button>
-                                                @endif
+                                                </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center py-5">
+                                                <p class="text-muted fw-bold">কোনো নিবন্ধিত ইউজার পাওয়া যায়নি।</p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white py-4 border-0">
+                        <div class="d-flex justify-content-center">
+                            {{ $users->links() }}
                         </div>
                     </div>
                 </div>
@@ -174,7 +230,8 @@
         </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

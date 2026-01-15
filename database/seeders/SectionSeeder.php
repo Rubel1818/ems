@@ -13,7 +13,7 @@ class SectionSeeder extends Seeder
      */
     public function run(): void
     {
-        $sections = firstOrCreate([
+        $sections = ([
             ['section_name_bn' => 'প্রশাসন শাখা', 'section_name_en' => 'Administration Section'],
             ['section_name_bn' => 'সংস্থাপন শাখা', 'section_name_en' => 'Establishment Section'],
             ['section_name_bn' => 'অর্থ শাখা', 'section_name_en' => 'Finance Section'],

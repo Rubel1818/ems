@@ -6,6 +6,13 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\StuffDesignation;
 
+
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\StuffDesignation;
+
 class StuffDesignationSeeder extends Seeder
 {
     /**
@@ -13,8 +20,8 @@ class StuffDesignationSeeder extends Seeder
      */
     public function run(): void
     {
-        $designations = firstOrCreate([
-
+        // ১. প্রথমে ডাটাগুলোকে একটি সাধারণ অ্যারেতে রাখুন
+        $designations = [
             // Grade 10–13
             ['designation_name_bn' => 'প্রশাসনিক কর্মকর্তা', 'designation_name_en' => 'Administrative officer'],
             ['designation_name_bn' => 'ব্যক্তিগত কর্মকর্তা', 'designation_name_en' => 'personal officer'],
@@ -29,21 +36,26 @@ class StuffDesignationSeeder extends Seeder
 
             // Grade 14–16
             ['designation_name_bn' => 'ডাটা এন্ট্রি অপারেটর', 'designation_name_en' => 'Data Entry Operator'],
-            ['designation_name_bn' => 'অফিস সহকারী কাম ক্যাশিয়ার', 'designation_name_en' => 'Office Assistant cum Cashier'],
+            ['designation_name_bn' => 'অফিস সহকারী কাম ক্যাশিয়ার', 'designation_name_en' => 'Office Assistant cum Cashier'],
             ['designation_name_bn' => 'হিসাব সহকারী', 'designation_name_en' => 'Accounts Assistant'],
             ['designation_name_bn' => 'রেকর্ড কিপার', 'designation_name_en' => 'Record Keeper'],
             ['designation_name_bn' => 'লাইব্রেরি সহকারী', 'designation_name_en' => 'Library Assistant'],
 
             // Grade 17–20
-            ['designation_name_bn' => 'অফিস পিয়ন', 'designation_name_en' => 'Office Peon'],
+            ['designation_name_bn' => 'অফিস পিয়ন', 'designation_name_en' => 'Office Peon'],
             ['designation_name_bn' => 'নৈশ প্রহরী', 'designation_name_en' => 'Night Guard'],
             ['designation_name_bn' => 'দপ্তরি', 'designation_name_en' => 'Doptori'],
             ['designation_name_bn' => 'এমএলএসএস', 'designation_name_en' => 'MLSS'],
             ['designation_name_bn' => 'পরিচ্ছন্নতাকর্মী', 'designation_name_en' => 'Cleaner'],
-        ]);
+        ];
 
+        // ২. লুপ চালিয়ে ডাটা ইনসার্ট করুন
         foreach ($designations as $designation) {
-            StuffDesignation::create($designation);
+            // updateOrCreate ব্যবহার করা সবচেয়ে নিরাপদ, এতে ডুপ্লিকেট হবে না
+            StuffDesignation::updateOrCreate(
+                ['designation_name_bn' => $designation['designation_name_bn']], // এই কলাম দিয়ে চেক করবে আছে কি না
+                ['designation_name_en' => $designation['designation_name_en']]  // না থাকলে বা পরিবর্তন হলে এটি সেট করবে
+            );
         }
     }
 }

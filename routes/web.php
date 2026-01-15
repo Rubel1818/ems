@@ -67,6 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/users', [AdminUserController::class, 'userIndex'])->name('users.index');
         Route::post('/users/{id}/approve', [AdminUserController::class, 'approveUser'])->name('users.approve');
         Route::post('/users/{id}/role', [AdminUserController::class, 'changeRole'])->name('users.role');
+        Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('users.destroy');
     });
 });
 

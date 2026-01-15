@@ -22,7 +22,7 @@
                     <a class="nav-link dropdown-toggle d-flex align-items-center bg-white bg-opacity-10 rounded-pill px-3 py-1"
                         href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person-circle text-white me-2 fs-5"></i>
-                        <span class="text-white small fw-semibold">{{ Auth::user()->name }}</span>
+                        <span class="text-white small fw-semibold">{{ Auth::user()->name_ban }}</span>
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 animate slideIn"

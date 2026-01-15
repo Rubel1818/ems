@@ -13,7 +13,7 @@ class DistrictSeeder extends Seeder
      */
     public function run(): void
     {
-        $districts = firstOrCreate([
+        $districts = ([
             ['district_name_bn' => 'ঢাকা', 'district_name_en' => 'Dhaka'],
             ['district_name_bn' => 'গাজীপুর', 'district_name_en' => 'Gazipur'],
             ['district_name_bn' => 'নারায়ণগঞ্জ', 'district_name_en' => 'Narayanganj'],

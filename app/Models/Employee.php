@@ -34,6 +34,7 @@ class Employee extends Model
         'stuff_designation_id',
         'section_id',
         'user_id',
+        'prl_date',
     ];
     // Employee belongs to District
     public function district()

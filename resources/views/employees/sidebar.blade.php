@@ -1,3 +1,22 @@
+<style>
+    .nav-link[aria-expanded="true"] .transition-icon {
+        transform: rotate(180deg);
+        transition: 0.3s ease;
+    }
+
+    .shadow-inner {
+        box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #designationDropdown .nav-link {
+        transition: 0.2s;
+    }
+
+    #designationDropdown .nav-link:hover {
+        color: #2ecc71 !important;
+        padding-left: 20px;
+    }
+</style>
 <nav class="col-md-3 col-lg-2 d-md-block sidebar shadow-lg" id="sidebarMenu">
     <div class="sidebar-sticky pt-4 px-3">
 
@@ -69,14 +88,36 @@
 
             @role('admin|employee')
                 <li class="nav-item">
-                    <a class="nav-link custom-link {{ Request::is('employees*') ? 'active' : '' }}"
-                        href="{{ route('employees.index') }}">
-                        <i class="fa-solid fa-users-line me-3"></i>
-                        <span>কর্মচারী তালিকা</span>
+                    <a class="nav-link custom-link d-flex justify-content-between align-items-center"
+                        data-bs-toggle="collapse" href="#designationDropdown" role="button" aria-expanded="false">
+                        <span><i class="fa-solid fa-users-line me-3"></i>কর্মচারী তালিকা</span>
+                        <i class="bi bi-chevron-down small transition-icon"></i>
                     </a>
+
+                    <div class="collapse {{ Request::is('employees*') ? 'show' : '' }}" id="designationDropdown">
+                        <ul class="nav flex-column ms-4 mt-1 bg-dark bg-opacity-25 rounded shadow-inner">
+                            {{-- সব কর্মচারী (All) --}}
+                            <li class="nav-item">
+                                <a class="nav-link small py-2 {{ !request('designation') && Request::is('employees') ? 'text-success fw-bold' : 'text-white-50' }}"
+                                    href="{{ route('employees.index') }}">
+                                    <i class="bi bi-circle-fill me-2" style="font-size: 5px;"></i> সকল কর্মচারী
+                                </a>
+                            </li>
+
+                            {{-- ডেজিগনেশন অনুযায়ী লিস্ট --}}
+                            @foreach ($allDesignations as $designation)
+                                <li class="nav-item">
+                                    <a class="nav-link small py-2 {{ request('designation') == $designation->id ? 'text-success fw-bold' : 'text-white-50' }}"
+                                        href="{{ route('employees.index', ['designation' => $designation->id]) }}">
+                                        <i class="bi bi-circle me-2" style="font-size: 5px;"></i>
+                                        {{ $designation->designation_name_bn }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </li>
             @endrole
-
 
 
             <li class="nav-item mt-4 pt-4 border-top border-secondary border-opacity-10">

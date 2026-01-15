@@ -14,41 +14,31 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class EmployeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-
         $user = auth()->user();
 
-        // Admin: all employees, latest first
-        if ($user->hasRole('admin')) {
-            $employees = Employee::with('stuffDesignation')
-                ->orderBy('created_at', 'desc')
-                ->get();
+        // ১. কুয়েরি শুরু করা হচ্ছে (সব রোলের জন্যই কমন)
+        $query = Employee::with(['stuffDesignation', 'district', 'section']);
+
+        // ২. ফিল্টারিং লজিক (সাইডবার থেকে ডেজিগনেশন ক্লিক করলে কাজ করবে)
+        if ($request->has('designation')) {
+            $query->where('stuff_designation_id', $request->designation);
+        }
+
+        // ৩. রোল ভিত্তিক ডাটা এবং ভিউ হ্যান্ডলিং
+
+        // ক. Admin অথবা Employee (সব ডাটা দেখতে পাবেন)
+        if ($user->hasAnyRole(['admin', 'employee'])) {
+            $employees = $query->latest()->get();
             return view('employees.index', compact('employees'));
         }
-        // Employee: all employees, latest first
-        elseif ($user->hasRole('employee')) {
-            $employees = Employee::with('stuffDesignation')
-                ->orderBy('created_at', 'desc')
-                ->get();
 
-            return view('employees.index', compact('employees'));
-        }
-        // UserDashboard: only approved employees
-        else {
+        // খ. অন্যান্য রোল বা গেস্ট (যেমন: UserDashboard)
+        // শুধুমাত্র অনুমোদিত (Approved) ডাটা ফিল্টার করা হচ্ছে
+        $employees = $query->where('status', 1)->latest()->get();
 
-            $employees = Employee::with(['district', 'section', 'stuffDesignation'])
-                ->where('status', 1)
-                ->get();
-
-            //dd($employees);
-
-            //return view('employees.dashboard', compact('employees'));
-            // Empty collection for other roles
-            return view('employees.dashboard', compact('employees'));
-        }
-        // Stuff: only approved employees   
-        //  return view('employees.index', compact('employees'));
+        return view('employees.dashboard', compact('employees'));
     }
 
 

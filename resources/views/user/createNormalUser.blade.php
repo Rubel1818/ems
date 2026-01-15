@@ -123,7 +123,7 @@
                                 </div>
                             @endif
 
-                            
+
                         </div>
                         <form action="{{ route('NormalUser.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
@@ -146,8 +146,8 @@
                                         <div class="col-md-6">
                                             <label class="form-label">নাম (বাংলা) <span
                                                     class="text-danger">*</span></label>
-                                            <input type="text" name="name_bn" class="form-control"
-                                                placeholder="বাংলায় নাম লিখুন" required>
+                                            <input type="text" class="form-control"
+                                                value="{{ auth()->user()->name_ban }}" readonly>
                                         </div>
 
 
@@ -155,7 +155,7 @@
                                             <label class="form-label">নাম (ইংরেজি) <span
                                                     class="text-danger">*</span></label>
                                             <input type="text" class="form-control"
-                                                value="{{ auth()->user()->name }}" readonly>
+                                                value="{{ auth()->user()->name_eng }}" readonly>
 
 
                                         </div>
@@ -197,8 +197,7 @@
                                 <div class="col-md-6">
                                     <div class="card p-3 border-light shadow-sm">
                                         <label class="form-label">স্থায়ী ঠিকানা (বাংলা)</label>
-                                        <textarea name="permanent_address_bn" rows="2" class="form-control mb-2"
-                                            placeholder="গ্রাম, রাস্তা, ডাকঘর..."></textarea>
+                                        <textarea name="permanent_address_bn" rows="2" class="form-control mb-2" placeholder="গ্রাম, রাস্তা, ডাকঘর..."></textarea>
 
                                         <label class="form-label">জেলা</label>
                                         <select name="district_id" class="form-select" required>
